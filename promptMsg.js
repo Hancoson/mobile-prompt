@@ -6,36 +6,32 @@
  * @author Guoxing.Han(hancoson#163.com)
  * @time 2016-10-11
  */
-;(function () {
-  var PromptMsg       = function (parent) {
+; (function () {
+  var PromptMsg = function (parent) {
     var parentDom = parent == undefined ? document.body : document.querySelector(parent);
 
     if (!parentDom.querySelector('.prompt-msg-mask')) {
-      var mask       = document.createElement('div');
+      var mask = document.createElement('div');
       mask.className = 'prompt-msg-mask';
       parentDom.appendChild(mask);
       this.mask = mask;
     }
     if (!parentDom.querySelector('.prompt-msg')) {
-      var promptMsg       = document.createElement('div');
+      var promptMsg = document.createElement('div');
       promptMsg.className = 'prompt-msg';
       parentDom.appendChild(promptMsg);
       this.promptMsg = promptMsg;
     }
   };
   PromptMsg.prototype = {
-    tpl: [
-      '<div class="prompt-msg-wrap">',
-      '  <div class="prompt-msg-info">{msg}</div>',
-      '</div>'
-    ].join(''),
+    tpl: '<div class="prompt-msg-info">{msg}</div>',
 
     /**
      * open
      * @param msg
      * @param duration
      */
-    alert   : function (msg, duration) {
+    alert: function (msg, duration) {
       this.tpl = this.tpl.replace('{msg}', msg);
 
       this.promptMsg.innerHTML = this.tpl;
@@ -43,20 +39,24 @@
       this.duration = duration || 1500;
       this.show();
     },
-    show    : function () {
+    show: function () {
       this.mask.className = this.mask.className + ' mask-show';
+      this.promptMsg.className = this.promptMsg.className + ' dialog-show';
       this.fadeShow(this.promptMsg)
       var that = this;
       setTimeout(function () {
         that.hide();
       }, this.duration);
     },
-    hide    : function () {
+    hide: function () {
       this.fadeHide(this.promptMsg);
-      var that = this;
+      var that = this,
+        classNames = this.mask.classList;
       setTimeout(function () {
-        that.promptMsg.remove()
-        that.mask.remove()
+        that.mask.className = classNames[0];
+        classNames = that.promptMsg.classList;
+        that.promptMsg.className = classNames[0];
+        that.mask.style = '';        
       }, 1000);
     },
     /**
@@ -65,9 +65,9 @@
      */
     fadeShow: function (obj) {
       var num = 0;
-      var st  = setInterval(function () {
+      var st = setInterval(function () {
         num++;
-        Fadeflag          = false;
+        Fadeflag = false;
         obj.style.opacity = num / 10;
         if (num >= 10) {
           clearInterval(st);
@@ -82,9 +82,9 @@
      */
     fadeHide: function (obj) {
       var num = 10;
-      var st  = setInterval(function () {
+      var st = setInterval(function () {
         num--;
-        Fadeflag          = false;
+        Fadeflag = false;
         obj.style.opacity = num / 10;
         if (num <= 0) {
           clearInterval(st);

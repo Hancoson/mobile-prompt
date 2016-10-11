@@ -33,11 +33,14 @@ body {
     position: absolute;
     left: 50%;
     top: 50%;
+    z-index: 1000;
     transform: translate3d(-50%, -50%, 0);
     border-radius: 10px;
     opacity: 0
 }
-
+.dialog-show{
+    display: block !important
+}
 .prompt-msg-info {
     color: #fff;
     padding: 10px;
